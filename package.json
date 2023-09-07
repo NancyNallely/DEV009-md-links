@@ -7,5 +7,15 @@
   "bootcamp": {
     "createdAt": "2023-08-22T22:00:38.678Z",
     "commit": "24f5a51ee0a15f345b59fcd2ef44c3616abdfce5"
+  },
+  "scripts": {
+    "test": "jest --coverage --env=jsdom"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "fs": "^0.0.1-security",
+    "jest": "^29.6.4",
+    "jest-environment-jsdom": "^29.6.4",
+    "node-fetch": "^2.7.0"
   }
 }
