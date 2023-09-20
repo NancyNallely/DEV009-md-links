@@ -19,7 +19,7 @@ const readMarkdownFile = (absolutePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(absolutePath, 'utf-8', (err, data) => {
       if (data) {
-        // console.log(data.magenta);
+         console.log(data.magenta);
         resolve(data);
       } else {
         reject(new Error('el archivo no contiene datos'));
@@ -34,10 +34,13 @@ const isValid = (filePath) => {
   return fetch(filePath)
     .then((response) => {
       if (response.ok) {
-        return true;
+        return response.json();
       } else {
-        return false;
+        throw new Error('No se pudo validar el archivo');
       }
+    })
+    .then((data) => {
+      return data;
     })
     .catch((error) => {
       return error;
@@ -57,13 +60,8 @@ const extractMarkdownLinks = (data, absolutePath, validate) => {
         .then((data) => {
           // La validación se realizó correctamente
           // `data` contiene la respuesta JSON del archivo
-          if (data) {
-            linkInfo.status = 200;
-            linkInfo.ok = 'ok';
-          }else {
-            linkInfo.status = 400;
-            linkInfo.ok = 'fail';
-          }
+          linkInfo.status = 200;
+          linkInfo.ok = 'Ok';
           return linkInfo; // Devolvemos linkInfo resuelto
         })
         .catch((error) => {
@@ -74,8 +72,6 @@ const extractMarkdownLinks = (data, absolutePath, validate) => {
         });
 
       linkPromises.push(promise);
-    } else {
-      linkPromises.push(Promise.resolve(linkInfo));
     }
   }
 
@@ -85,23 +81,25 @@ const extractMarkdownLinks = (data, absolutePath, validate) => {
       return resolvedLinks;
     });
 }
-  // validar si el archivo en markdown
+
 const isMarkDown = (absolutePath) => {
-  const extensionesValidas = ['.md','.mkd','.mdwn','.mdown','.mdtxt','.markdown','.text'];
-  const extensionArchivo = path.extname(absolutePath).toLowerCase();
-  return extensionesValidas.includes(extensionArchivo);
+  return new Promise((resolve, reject) => {
+    switch (path.extname(absolutePath)) {
+      case '.md':
+      case '.mkd':
+      case '.mdwn':
+      case '.mdown':
+      case '.mdtxt':
+      case '.markdown':
+      case '.text':
+        resolve(true);
+        break;
+
+      default:
+        resolve(false);
+        break;
+    }
+  });
 };
 
-// funcion para leer el contenido de un directorio como promesa
-const readMarkdownDirectory = (absolutePath) => {
-  try{
-    // Lee la lista de archivos en el directorio 'absolutePath' de manera síncrona y con información adicional (withFileTypes: true).
-    const listaArchivos = fs.readdirSync(absolutePath, { withFileTypes: true});
-     // Resuelve la promesa con la lista de archivos obtenida.
-    return Promise.resolve(listaArchivos);
-  } catch (error){
-    // En caso de error al leer el directorio, rechaza la promesa con el error.
-    return Promise.reject(error);
-  }
-};
-module.exports = {pathExists, readMarkdownFile, readMarkdownDirectory, extractMarkdownLinks, isMarkDown, isValid };
+module.exports = {pathExists, readMarkdownFile, extractMarkdownLinks, isMarkDown, isValid };
