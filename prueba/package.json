@@ -16,10 +16,6 @@
     "fs": "^0.0.1-security",
     "jest": "^29.6.4",
     "jest-environment-jsdom": "^29.6.4",
-    "md-links": "github:Nancynallely/DEV009-md-links",
     "node-fetch": "^2.7.0"
-  },
-  "bin": {
-    "md-links": "./index.js"
   }
 }
