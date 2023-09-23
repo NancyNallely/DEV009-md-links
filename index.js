@@ -1,25 +1,55 @@
 #!/usr/bin/env node
-// "shebang" o "hashbang", y su propósito principal es indicar al sistema operativo cómo debe ejecutar el archivo.
-//Indica que el script debe ejecutarse utilizando Node.js
-// Importación del módulo 'mdLinks' desde el archivo './mdLinks.js'
 const { mdLinks } = require('./mdLinks.js');
-/* hito 4 */
-// Importación del módulo 'path' de Node.js para trabajar con rutas de archivos
 const path = require('path');
-// Obtención de los argumentos pasados al script desde la línea de comandos
 const [, , ...args] = process.argv;
-// Extracción del primer argumento, que se espera que sea una ruta de archivo o directorio
 const path1 = args[0];
-// Verificación si la opción '--validate' está presente en los argumentos
 const validate = args.includes('--validate');
-/* hito 4 */
-// Llamada a la función 'mdLinks' con la ruta absoluta de 'path1' y la opción de validación 'validate'
-mdLinks(path.resolve(path1), validate)
-  .then((links) => {
-    // Manejo de la resolución exitosa de la promesa: impresión de los enlaces
-    console.log(links);
+const stats = args.includes('--stats');
+
+mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opciones
+  .then((results) => {
+    let total = 0;
+    let unique = 0;
+    let broken = 0;
+    const links = [];
+
+    if (results.links) {
+      results.links.forEach((element) => {
+        links.push(element);
+        total++;
+        if (validate && element.status !== 200){
+          broken++;
+        }
+      });
+      unique = [...new Set(links.map((link) => link.href))].length;
+    }
+
+    if (stats) {
+      console.log('Total de enlaces:', total);
+      console.log('Enlaces únicos:', unique);
+      if (stats){
+        console.log('Enlaces rotos:', broken);
+      }
+     
+    }
+
+    if (validate) {
+      if (links.length === 0) {
+        console.log(results);
+      } else {
+        links.forEach((link) => {
+          if (link.links) {
+            console.log(link.links);
+          } else {
+            console.log(link);
+          }
+
+        });
+      }
+    } else if (!stats) {
+      console.log(results);
+    }
   })
   .catch((error) => {
-    // Manejo de cualquier error que pueda ocurrir durante la ejecución
     console.error(error.message);
   });
