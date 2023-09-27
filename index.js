@@ -1,55 +1,76 @@
 #!/usr/bin/env node
+// La línea anterior indica que este archivo es un script de Node.js y debe ejecutarse con Node.js.
 const { mdLinks } = require('./mdLinks.js');
+// Importa el módulo path de Node.js para trabajar con rutas de archivos y directorios
 const path = require('path');
+// Desestructura process.argv para obtener los argumentos, ignorando los dos primeros elementos.
 const [, , ...args] = process.argv;
 const path1 = args[0];
+// La variable validate se establece en true si se incluye el argumento --validate.
 const validate = args.includes('--validate');
+// La variable stats se establece en true si se incluye el argumento --stats.
 const stats = args.includes('--stats');
 
+// Invocación de la función mdLinks con la ruta resuelta y opciones de validate y stats
 mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opciones
-  .then((results) => {
+  .then((results) => { // Manejo de la promesa resuelta
     let total = 0;
-    let unique = 0;
-    let broken = 0;
+    let unicos = 0;
+    let rotos = 0;
+    // Inicialización de un arreglo para almacenar los enlaces encontrados
     const links = [];
 
+     // Comprobación de si existen resultados de enlaces en el objeto results
     if (results.links) {
+      // Iteración a través de los enlaces encontrados
       results.links.forEach((element) => {
+        // Agregar el enlace al arreglo de enlaces
         links.push(element);
-        total++;
+        total++;// Incrementar el contador de enlaces totales
+        // Comprobar si se requiere validación y si el enlace está roto (código de estado diferente de 200)
         if (validate && element.status !== 200){
-          broken++;
+          rotos++;// Incrementar el contador de enlaces rotos
         }
       });
-      unique = [...new Set(links.map((link) => link.href))].length;
+      // Calcular la cantidad de enlaces únicos utilizando un conjunto y luego calculando su longitud
+      unicos = [...new Set(links.map((link) => link.href))].length;
     }
-
+    // Comprobación de si se requiere estadísticas
     if (stats) {
-      console.log('Total de enlaces:', total);
-      console.log('Enlaces únicos:', unique);
-      if (stats){
-        console.log('Enlaces rotos:', broken);
+      // Imprimir el total de enlaces
+      console.log('Total de enlaces:'.magenta, total);
+      // Imprimir el total de enlaces unicos
+      console.log('Enlaces únicos:'.yellow, unicos);
+      if (validate){
+        // Imprimir el total de enlaces rotos si se requiere validacion
+        console.log('Enlaces rotos:'.red, rotos);
       }
      
     }
-
-    if (validate) {
+    
+    // Comprobación de si se requiere validación
+    if (validate && !stats) {
       if (links.length === 0) {
+        // Imprimir los resultados completos si no hay enlaces encontrados
         console.log(results);
       } else {
         links.forEach((link) => {
           if (link.links) {
+            // Imprimir los enlaces validados si se requiere validación
             console.log(link.links);
           } else {
+            // Imprimir los enlaces sin validación si se requiere validación
             console.log(link);
           }
 
         });
       }
     } else if (!stats) {
+      // Imprimir los resultados completos si no se requieren estadísticas ni validación
       console.log(results);
     }
   })
-  .catch((error) => {
+  .catch((error) => {// Manejo de errores en caso de que la promesa se rechace
+    // Imprimir el mensaje de error en la consola
     console.error(error.message);
   });
