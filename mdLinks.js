@@ -36,7 +36,7 @@ const mdLinks = (path1, options) => {
     } else {
       //console.info('👎 no es markdown 😠'.red);
       // Devuelve una promesa resuelta con un arreglo vacío si no es un archivo Markdown
-      return Promise.resolve(['Error, no es markdown']); 
+      return Promise.resolve([]); 
     }
   } else if (element.isDirectory()) {
     //console.info('👍 es directorio 😆'.gray);

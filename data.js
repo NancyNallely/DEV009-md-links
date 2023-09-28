@@ -78,7 +78,7 @@ const extractMarkdownLinks = (data, absolutePath, validate) => {
         })
         .catch((error) => {
           // Ocurrió un error durante la validación
-          linkInfo.status = 400;
+          linkInfo.status = 404;
           linkInfo.ok = 'fail';
           return linkInfo; // Devolvemos linkInfo con error
         });
