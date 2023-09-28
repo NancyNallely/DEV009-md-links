@@ -15,6 +15,7 @@ const mdLinks = (path1, options) => {
     // Rechaza la promesa si la ruta no existe
     return Promise.reject(new Error('La ruta no existe'));
   }
+  try{
  // Obtiene información sobre el elemento en la ruta (archivo o directorio)
   const element = fs.statSync(absolutePath);
 
@@ -29,13 +30,13 @@ const mdLinks = (path1, options) => {
           return links;
         })
         .catch((error) => {
-          // console.error('Error al procesar el archivo:', error);
-          return ['Error, el archivo no es markdown']; // Devuelve un arreglo vacío en caso de error
+          console.error('Error al procesar el archivo:', error);
+          return []; // Devuelve un arreglo vacío en caso de error
         });
     } else {
       //console.info('👎 no es markdown 😠'.red);
       // Devuelve una promesa resuelta con un arreglo vacío si no es un archivo Markdown
-      return Promise.resolve([]); 
+      return Promise.resolve(['Error, no es markdown']); 
     }
   } else if (element.isDirectory()) {
     //console.info('👍 es directorio 😆'.gray);
@@ -77,6 +78,9 @@ const mdLinks = (path1, options) => {
   }
 
   return Promise.resolve([]); // Devuelve un arreglo vacío si no es ni archivo ni directorio
+} catch (error) {
+  return Promise.reject(new Error(`Error al verificar la ruta${error}`.red));
+}
 };
 
 

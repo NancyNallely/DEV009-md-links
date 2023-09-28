@@ -11,6 +11,13 @@ const validate = args.includes('--validate');
 // La variable stats se establece en true si se incluye el argumento --stats.
 const stats = args.includes('--stats');
 
+// Comprueba si no se proporciona una ruta válida (path1) o si se proporcionan más de un argumento y ninguna de las banderas validate o stats están habilitadas.
+if (!path1 || (args.length > 1 && !validate && !stats)) {
+  // Imprime un mensaje de error en la consola indicando el uso incorrecto.
+  console.error('Uso incorrecto. Debes proporcionar una ruta y, opcionalmente, las banderas --validate y/o --stats.'.magenta);
+  // Termina el proceso de la aplicación con un código de salida 1 para indicar un error.
+  process.exit(1);
+}
 // Invocación de la función mdLinks con la ruta resuelta y opciones de validate y stats
 mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opciones
   .then((results) => { // Manejo de la promesa resuelta
@@ -20,7 +27,7 @@ mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opc
     // Inicialización de un arreglo para almacenar los enlaces encontrados
     const links = [];
 
-     // Comprobación de si existen resultados de enlaces en el objeto results
+    // Comprobación de si existen resultados de enlaces en el objeto results
     if (results.links) {
       // Iteración a través de los enlaces encontrados
       results.links.forEach((element) => {
@@ -28,7 +35,7 @@ mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opc
         links.push(element);
         total++;// Incrementar el contador de enlaces totales
         // Comprobar si se requiere validación y si el enlace está roto (código de estado diferente de 200)
-        if (validate && element.status !== 200){
+        if (validate && element.status !== 200) {
           rotos++;// Incrementar el contador de enlaces rotos
         }
       });
@@ -41,13 +48,13 @@ mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opc
       console.log('Total de enlaces:'.magenta, total);
       // Imprimir el total de enlaces unicos
       console.log('Enlaces únicos:'.yellow, unicos);
-      if (validate){
+      if (validate) {
         // Imprimir el total de enlaces rotos si se requiere validacion
         console.log('Enlaces rotos:'.red, rotos);
       }
-     
+
     }
-    
+
     // Comprobación de si se requiere validación
     if (validate && !stats) {
       if (links.length === 0) {

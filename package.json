@@ -1,6 +1,15 @@
 {
   "name": "md-links",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Herramienta para analizar archivos Markdown y extraer enlaces.",
+  "keywords": [
+    "javascript",
+    "node",
+    "jest",
+    "markdown",
+    "links"
+  ],
+  "license": "MIT",
   "engines": {
     "node": ">=16.x"
   },
@@ -9,17 +18,28 @@
     "commit": "24f5a51ee0a15f345b59fcd2ef44c3616abdfce5"
   },
   "scripts": {
+    "eslint": "eslint --ext .js ./ test/",
+    "lint": "eslint --ext .js ./ test/",
+    "pretest": "npm run eslint",
     "test": "jest --coverage --env=jsdom"
   },
   "dependencies": {
     "colors": "^1.4.0",
-    "fs": "^0.0.1-security",
-    "jest": "^29.6.4",
-    "jest-environment-jsdom": "^29.6.4",
-    "md-links": "github:Nancynallely/DEV009-md-links",
     "node-fetch": "^2.7.0"
   },
   "bin": {
-    "md-links": "./index.js"
+    "mdLinks:": "./index.js"
+  },
+  "devDependencies": {
+    "eslint": "^8.50.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jest": "^27.4.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github:Nancynallely/DEV009-md-links"
   }
 }

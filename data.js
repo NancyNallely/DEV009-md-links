@@ -26,7 +26,7 @@ const readMarkdownFile = (absolutePath) => {
         // Rechaza la promesa con un error si no hay datos o hay un error de lectura.
         reject(new Error('el archivo no contiene datos'));
         // Imprime un mensaje de error en la consola (en verde) si hay un error.
-        console.log('error: ', err.green);
+       // console.log('error: '.red, err);
       }
     });
   });
