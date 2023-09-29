@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "colors": "^1.4.0",
+    "md-links": "github:Nancynallely/DEV009-md-links",
     "node-fetch": "^2.7.0"
   },
   "bin": {

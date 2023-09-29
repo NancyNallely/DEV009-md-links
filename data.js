@@ -9,7 +9,7 @@ const pathExists = (absolutePath) => {
     if (fs.existsSync(absolutePath)) {
       resolve(true);// Resuelve la promesa como verdadera si la ruta existe.
     } else {
-      resolve(false);// Resuelve la promesa como falsa si la ruta no existe.
+      reject(false);// Rechaza la promesa como falsa si la ruta no existe.
     }
   });
 };
