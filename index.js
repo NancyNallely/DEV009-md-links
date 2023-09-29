@@ -26,7 +26,6 @@ mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opc
     let rotos = 0;
     // Inicialización de un arreglo para almacenar los enlaces encontrados
     const links = [];
-
     // Comprobación de si existen resultados de enlaces en el objeto results
     if (results.links) {
       // Iteración a través de los enlaces encontrados
@@ -41,6 +40,15 @@ mdLinks(path.resolve(path1), { validate, stats }) // Pasar un objeto con las opc
       });
       // Calcular la cantidad de enlaces únicos utilizando un conjunto y luego calculando su longitud
       unicos = [...new Set(links.map((link) => link.href))].length;
+    } else if(results.length > 0) {
+      results.forEach((element) => {
+        links.push(element);
+        total += 1;
+        // Comprobar si se requiere validación y si el enlace está roto (código de estado diferente de 200)
+        if (validate && element.status !== 200) {
+          rotos++;// Incrementar el contador de enlaces rotos
+        }
+      });
     }
     // Comprobación de si se requiere estadísticas
     if (stats) {

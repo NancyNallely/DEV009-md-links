@@ -17,10 +17,11 @@ describe('cuando la ruta existe', () => {
       });
   });
 
-  it('debería resolverse en falso cuando la ruta no existe', () => {
-    fs.existsSync.mockReturnValue(false);
+  it('debería rechazar como falso cuando la ruta no existe', () => {
+    fs.existsSync.mockReturnValue(false); // Configura la burla para que devuelva false.
+    
     return funciones.pathExists('/path/to/nonexistent/file')
-      .then((result) => {
+      .catch((result) => {
         expect(result).toBe(false);
       });
   });

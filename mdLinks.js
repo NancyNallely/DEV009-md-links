@@ -20,9 +20,9 @@ const mdLinks = (path1, options) => {
   const element = fs.statSync(absolutePath);
 
   if (element.isFile()) {
-   // console.info('👍 es archivo 😃'.blue);
+    // console.info('👍 es archivo 😃'.blue);
     if (funciones.isMarkDown(absolutePath)) {
-      //console.info('👍 es markdown 😉'.yellow);
+      // console.info('👍 es markdown 😉'.yellow);
       // Lee el contenido del archivo Markdown
       return funciones.readMarkdownFile(absolutePath)
         .then((data) => funciones.extractMarkdownLinks(data, absolutePath, options.validate))
