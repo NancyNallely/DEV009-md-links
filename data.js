@@ -1,6 +1,6 @@
-const fs = require('fs');// Módulo 'fs' para interactuar con el sistema de archivos.
-const path = require('path'); // Módulo 'path' para manejar rutas de archivo y directorio.
-const fetch = require('node-fetch');// Módulo 'node-fetch' para realizar solicitudes HTTP.
+const fs = require('fs');
+const path = require('path'); 
+const fetch = require('node-fetch');
 const colors = require('colors');
 
 // Función para verificar si una ruta existe
@@ -14,7 +14,7 @@ const pathExists = (absolutePath) => {
   });
 };
 
-// Función para leer el contenido de un archivo markdown como promesa
+// Función para leer el contenido de un archivo markdown 
 const readMarkdownFile = (absolutePath) => {
   return new Promise((resolve, reject) => {
     fs.readFile(absolutePath, 'utf-8', (err, data) => {
@@ -65,8 +65,7 @@ const extractMarkdownLinks = (data, absolutePath, validate) => {
       const promise = isValid(m[2])
         .then((data) => {
           // La validación se realizó correctamente
-          // `data` contiene la respuesta JSON del archivo
-          if (data) {
+          if (data) {// si data es verdadero
             linkInfo.status = 200;
             linkInfo.ok = 'ok';
           }else {
@@ -74,11 +73,11 @@ const extractMarkdownLinks = (data, absolutePath, validate) => {
             linkInfo.status = 400;
             linkInfo.ok = 'fail';
           }
-          return linkInfo; // Devolvemos linkInfo resuelto
+          return linkInfo; // Devolvemos linkInfo resueltos y los guarda en promise
         })
         .catch((error) => {
           // Ocurrió un error durante la validación
-          linkInfo.status = 404;
+          linkInfo.status = 404;//la ruta no existe
           linkInfo.ok = 'fail';
           return linkInfo; // Devolvemos linkInfo con error
         });
@@ -98,7 +97,6 @@ const extractMarkdownLinks = (data, absolutePath, validate) => {
 
   // Función para verificar si un archivo tiene una extensión de Markdown
 const isMarkDown = (absolutePath) => {
-  // Lista de extensiones válidas para archivos Markdown
   const extensionesValidas = ['.md','.mkd','.mdwn','.mdown','.mdtxt','.markdown','.text'];
   // Obtiene la extensión del archivo y la convierte a minúsculas
   const extensionArchivo = path.extname(absolutePath).toLowerCase();

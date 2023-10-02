@@ -1,5 +1,4 @@
 const funciones = require ('../data.js');
-//const { mdLinks } = require('../mdLinks.js');
 const fs = require('fs');
 const path = require('path');
 const fetch = require('node-fetch');
@@ -18,7 +17,7 @@ describe('cuando la ruta existe', () => {
   });
 
   it('debería rechazar como falso cuando la ruta no existe', () => {
-    fs.existsSync.mockReturnValue(false); // Configura la burla para que devuelva false.
+    fs.existsSync.mockReturnValue(false); // Configura el mock para que devuelva false.
     
     return funciones.pathExists('/path/to/nonexistent/file')
       .catch((result) => {
@@ -322,90 +321,3 @@ describe('leer Markdown Directory', () => {
     });
   });
 });
-
-/* describe('mdLinks', () => {
-
-  // Prueba que la función se resuelve con una matriz de objetos que contienen href, texto y propiedades de archivo cuando se le proporciona una ruta de archivo markdown válida con enlaces
-  it('debe resolverse con una serie de objetos que contienen href, texto y propiedades de archivo cuando se le proporciona una ruta de archivo de rebajas válida con enlaces', () => {
-    // Simula la función pathExists para devolver verdadero
-    funciones.pathExists = jest.fn().mockReturnValue(true);
-
-    // Simula la función isMarkDown para devolver verdadero
-    funciones.isMarkDown = jest.fn().mockReturnValue(true);
-    // Simula la función readMarkdownFile para devolver una promesa que se resuelve con datos markdown
-    funciones.readMarkdownFile = jest.fn().mockResolvedValue('markdown data');
-
-    // Simula la función extractMarkdownLinks para devolver una matriz de objetos
-    funciones.extractMarkdownLinks = jest.fn().mockReturnValue([{ href: 'link', text: 'link text', file: 'file path' }]);
-
-    // Simula la función statSync para devolver un objeto que indica que el archivo existe y es un archivo
-    fs.statSync = jest.fn().mockReturnValue({ isFile: () => true });
-
-    // Llame a la función mdLinks con una ruta de archivo markdown válida
-    return mdLinks('valid/path.md', false)
-      .then((result) => {
-        //Esperamos que el resultado sea una matriz
-        expect(Array.isArray(result)).toBe(true);
-
-        // Se espera que el resultado contenga un objeto con propiedades href, texto y archivo
-        expect(result[0]).toEqual({ href: 'link', text: 'link text', file: 'file path' });
-      });
-  });
-  // Prueba que la función rechaza con un error cuando se le proporciona una ruta no válida
-  it('debe rechazar con un error cuando se le proporciona una ruta no válida', () => {
-    // Mock de la función pathExists para devolver falsa
-    funciones.pathExists = jest.fn().mockReturnValue(false);
-
-    // Llama a la función mdLinks con una ruta no válida
-    return mdLinks('invalid/path.md', false)
-      .catch((error) => {
-        // Espera que el error sea una instancia de Error
-        expect(error).toBeInstanceOf(Error);
-
-        //Esperamos que el mensaje de error sea 'la ruta no existe'
-        expect(error.message).toBe('La ruta no existe');
-      });
-  });
-
-  // Prueba que la función rechaza con un error cuando se le da una ruta a un archivo no existente
-  it('debería rechazar con un error cuando se le proporcione una ruta a un archivo no existente', () => {
-    // Mock de la función pathExists para devolver falsa
-    funciones.pathExists = jest.fn().mockReturnValue(false);
-
-    // Llama a la función mdLinks con una ruta a un archivo no existente
-    return mdLinks('non-existing/file.md', false)
-      .catch((error) => {
-        // Espera que el error sea una instancia de Error
-        expect(error).toBeInstanceOf(Error);
-
-        //Esperamos que el mensaje de error sea 'la ruta no existe'
-        expect(error.message).toBe('La ruta no existe');
-      });
-  });
-
-  // Prueba que la función rechaza con un error cuando se le proporciona una ruta no válida
-  it('debe rechazar con un error cuando se le proporciona una ruta no válida', () => {
-    // Mock de la función pathExists para devolver falsa
-    funciones.pathExists = jest.fn().mockReturnValue(false);
-
-    // Llama a la función mdLinks con una ruta no válida
-    return expect(mdLinks('invalid/path.md', false)).rejects.toThrow('La ruta no existe');
-  });
-  // Devuelve una matriz vacía para una ruta de archivo markdown
-  it('debería devolver una matriz vacía cuando se le proporcione una ruta de archivo sin markdown', () => {
-    const path = 'non/markdown/file.txt';
-    const options = {};
-
-    //Comprueba si el archivo existe antes de ejecutar la prueba
-    if (fs.existsSync(path)) {
-      return mdLinks(path, options)
-        .then((result) => {
-          expect(Array.isArray(result)).toBe(true);
-          expect(result.length).toBe(0);
-        });
-    } else {
-      // Si el archivo no existe, la prueba pasa
-      return Promise.resolve();
-    }
-  });
-}); */
